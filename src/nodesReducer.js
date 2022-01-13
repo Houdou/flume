@@ -299,6 +299,7 @@ const nodesReducer = (
         x,
         y,
         type: nodeType,
+        selected: false,
         width: nodeTypes[nodeType].initialWidth || 200,
         connections: {
           inputs: {},
@@ -326,7 +327,34 @@ const nodesReducer = (
 
     case "REMOVE_NODE": {
       const { nodeId } = action;
+      if(context.selectedNodeId === nodeId) {
+        context.selectedNodeId = null;
+      }
       return removeNode(nodes, nodeId);
+    }
+
+    case "SELECT_NODE": {
+      const { nodeId } = action;
+      const prev_node_id = context.selectedNodeId;
+      const unselected_node = prev_node_id && nodes[prev_node_id];
+      context.selectedNodeId = nodeId;
+
+      return Object.assign(
+        {},
+        nodes,
+        unselected_node && {
+          [prev_node_id]: {
+            ...unselected_node,
+            selected: false
+          },
+        },
+        nodeId && {
+          [nodeId]: {
+            ...nodes[nodeId],
+            selected: true
+          }
+        }
+      );
     }
 
     case "HYDRATE_DEFAULT_NODES": {

@@ -42,6 +42,7 @@ export let NodeEditor = (
     context = defaultContext,
     onChange,
     onCommentsChange,
+    onSelectedChange,
     initialScale,
     spaceToPan = false,
     hideComments = false,
@@ -135,6 +136,14 @@ export let NodeEditor = (
       setSideEffectToasts(null)
     }
   }, [sideEffectToasts])
+
+  const previousSelectedNodeId = usePrevious(context.selectedNodeId);
+
+  React.useEffect(() => {
+    if(onSelectedChange && context.selectedNodeId && context.selectedNodeId !== previousSelectedNodeId) {
+      onSelectedChange(nodes[context.selectedNodeId]);
+    }
+  }, [context.selectedNodeId, previousSelectedNodeId, onSelectedChange])
 
   return (
     <PortTypesContext.Provider value={portTypes}>

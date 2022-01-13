@@ -130,6 +130,15 @@ const Node = ({
     onDragStart();
   };
 
+  const handleClick = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    nodesDispatch({
+      type: "SELECT_NODE",
+      nodeId: id
+    })
+  }
+
   const handleContextMenu = e => {
     e.preventDefault();
     e.stopPropagation();
@@ -168,6 +177,7 @@ const Node = ({
       innerRef={nodeWrapper}
       data-node-id={id}
       onContextMenu={handleContextMenu}
+      onClick={handleClick}
       stageState={stageState}
       stageRect={stageRect}
     >
