@@ -244,7 +244,10 @@ const Stage = ({
       onKeyDown={handleKeyDown}
       tabIndex={-1}
       stageState={{ scale, translate }}
-      style={{ cursor: spaceIsPressed && spaceToPan ? "grab" : "" }}
+      style={{
+        cursor: spaceIsPressed && spaceToPan ? "grab" : "",
+        '--background-size': `${scale * 36}px`
+      }}
       disabled={disablePan || (spaceToPan && !spaceIsPressed)}
       data-flume-stage={true}
     >
