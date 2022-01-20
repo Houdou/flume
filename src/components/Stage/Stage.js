@@ -27,9 +27,12 @@ const Stage = ({
   const dispatchNodes = React.useContext(NodeDispatchContext);
   const wrapper = React.useRef();
   const translateWrapper = React.useRef();
+  const selectionArea = React.useRef();
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [selecting, setSelecting] = React.useState(false);
   const [menuCoordinates, setMenuCoordinates] = React.useState({ x: 0, y: 0 });
   const dragData = React.useRef({ x: 0, y: 0 });
+  const selectData = React.useRef({ x: 0, y: 0, w: 0, h: 0 });
   const [spaceIsPressed, setSpaceIsPressed] = React.useState(false);
 
   const setStageRect = React.useCallback(() => {
@@ -67,18 +70,54 @@ const Stage = ({
 
   const handleDragStart = e => {
     e.preventDefault();
+    const pan = e.buttons === 4 || e.altKey;
     dragData.current = {
+      pan,
       x: e.clientX,
       y: e.clientY
     };
+    selectData.current = {
+      x: e.clientX,
+      y: e.clientY,
+      w: 0,
+      h: 0,
+    }
+    if(!pan) {
+      // Selection area window
+      setSelecting(true);
+    }
   };
 
   const handleMouseDrag = (coords, e) => {
-    const xDistance = dragData.current.x - e.clientX;
-    const yDistance = dragData.current.y - e.clientY;
-    translateWrapper.current.style.transform = `translate(${-(
-      translate.x + xDistance
-    )}px, ${-(translate.y + yDistance)}px)`;
+    if(dragData.current.pan) {
+      const xDistance = dragData.current.x - e.clientX;
+      const yDistance = dragData.current.y - e.clientY;
+      translateWrapper.current.style.transform = `translate(${-(
+        translate.x + xDistance
+      )}px, ${-(translate.y + yDistance)}px)`;
+    } else {
+      const prev = {...selectData.current};
+      const dx = e.clientX - dragData.current.x;
+      const dy = e.clientY - dragData.current.y;
+      // Update selection area size
+      selectData.current = {
+        x: prev.x,
+        y: prev.y,
+        w: dx,
+        h: dy,
+      };
+
+      const area = {
+        x: Math.min(prev.x, prev.x + dx),
+        y: Math.min(prev.y, prev.y + dy),
+        w: Math.abs(dx),
+        h: Math.abs(dy),
+      };
+      selectionArea.current.style.left = `${area.x}px`;
+      selectionArea.current.style.top = `${area.y}px`;
+      selectionArea.current.style.width = `${area.w}px`;
+      selectionArea.current.style.height = `${area.h}px`;
+    }
   };
 
   const handleDragEnd = e => {
@@ -86,13 +125,18 @@ const Stage = ({
     const yDistance = dragData.current.y - e.clientY;
     dragData.current.x = e.clientX;
     dragData.current.y = e.clientY;
-    dispatchStageState(({ translate: tran }) => ({
-      type: "SET_TRANSLATE",
-      translate: {
-        x: tran.x + xDistance,
-        y: tran.y + yDistance
-      }
-    }));
+    if(dragData.current.pan) {
+      dispatchStageState(({ translate: tran }) => ({
+        type: "SET_TRANSLATE",
+        translate: {
+          x: tran.x + xDistance,
+          y: tran.y + yDistance
+        }
+      }));
+    } else {
+      // Trigger selection
+      setSelecting(false);
+    }
   };
 
   const handleContextMenu = e => {
@@ -213,6 +257,21 @@ const Stage = ({
             onRequestClose={closeContextMenu}
             onOptionSelected={addNode}
             label="Add Node"
+          />
+        </Portal>
+      ) : null}
+      {selecting ? (
+        <Portal>
+          <div
+            ref={selectionArea}
+            style={{
+              width: 0,
+              height: 0,
+              left: 0,
+              top: 0,
+              position: 'absolute',
+              border: '2px cyan solid'
+            }}
           />
         </Portal>
       ) : null}
