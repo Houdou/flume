@@ -1,7 +1,6 @@
 .wrapper{
   font-size: 14px;
   padding: 3px 6px;
-  border-radius: 4px;
   background: linear-gradient(to top, #5b5f62, #6f7477);
   width: 100%;
   border: 1px solid #3c3e40;
@@ -26,7 +25,6 @@
 .chipWrapper{
   font-size: 14px;
   padding: 3px 6px;
-  border-radius: 4px;
   background: linear-gradient(to top, #5b5f62, #6f7477);
   border: 1px solid #3c3e40;
   margin: 2px;
@@ -65,7 +63,6 @@
 .selectedWrapper{
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
   background: linear-gradient(to top, #5b5f62, #6f7477);
   width: 100%;
   border: 1px solid #3c3e40;
