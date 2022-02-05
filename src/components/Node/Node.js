@@ -29,7 +29,7 @@ const Node = ({
 }) => {
   const cache = React.useContext(CacheContext);
   const nodeTypes = React.useContext(NodeTypesContext);
-  const nodesDispatch = React.useContext(NodeDispatchContext);
+  const dispatchNodes = React.useContext(NodeDispatchContext);
   const stageState = React.useContext(StageContext);
   const { label, deletable, inputs = [], outputs = [] } = nodeTypes[type];
 
@@ -114,7 +114,7 @@ const Node = ({
   };
 
   const stopDrag = (e, coordinates) => {
-    nodesDispatch({
+    dispatchNodes({
       type: "SET_NODE_COORDINATES",
       ...coordinates,
       nodeId: id
@@ -133,7 +133,7 @@ const Node = ({
   const handleClick = e => {
     e.preventDefault();
     e.stopPropagation();
-    nodesDispatch({
+    dispatchNodes({
       type: "SELECT_NODE",
       nodeId: id
     })
@@ -154,7 +154,7 @@ const Node = ({
   const handleMenuOption = ({ value }) => {
     switch (value) {
       case "deleteNode":
-        nodesDispatch({
+        dispatchNodes({
           type: "REMOVE_NODE",
           nodeId: id
         });

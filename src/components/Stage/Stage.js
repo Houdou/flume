@@ -139,6 +139,13 @@ const Stage = ({
     }
   };
 
+  const handleClick = e => {
+    dispatchNodes({
+      type: "SELECT_NODE",
+      nodeId: null
+    })
+  };
+
   const handleContextMenu = e => {
     e.preventDefault();
     setMenuCoordinates({ x: e.clientX, y: e.clientY });
@@ -242,6 +249,7 @@ const Stage = ({
       onDrag={handleMouseDrag}
       onDragEnd={handleDragEnd}
       onKeyDown={handleKeyDown}
+      onClick={handleClick}
       tabIndex={-1}
       stageState={{ scale, translate }}
       style={{
