@@ -1,14 +1,20 @@
 .wrapper {
   width: 100%;
-  padding-right: 3px;
-  padding-top: 3px;
-  padding-bottom: 5px;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
 }
 .label {
   font-size: 14px;
 }
 .controlLabel {
-  font-size: 13px;
-  display: inline-block;
-  margin-left: 2px;
+  font-size: 12px;
+  height: 14px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.value {
+  margin-top: 2px;
+  width: 100%;
 }

@@ -11,11 +11,11 @@
   cursor: default;
 }
 .label{
-  font-size: 13px;
+  font-size: 14px;
   text-transform: uppercase;
-  padding: 5px;
-  background: #464b4e;
-  border-radius: 5px 5px 0px 0px;
+  padding: 6px;
+  background: #757b7d;
+  color: #111;
   margin: 0px;
   margin-bottom: 3px;
   border-bottom: 1px solid rgba(0,0,0,.15);

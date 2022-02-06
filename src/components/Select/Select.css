@@ -65,17 +65,21 @@
   flex-direction: column;
   background: linear-gradient(to top, #5b5f62, #6f7477);
   width: 100%;
+  min-height: 26px;
   border: 1px solid #3c3e40;
-  font-size: 14px;
-  padding: 3px 6px;
+  font-size: 13px;
+  padding: 4px 6px;
   padding-right: 15px;
   position: relative;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
   &::after{
     content: "";
     position: absolute;
     background: none;
     right: 5px;
-    top: calc(50% - 4px);
+    top: calc(50% - 3px);
     width: 0;
     height: 0;
     border-style: solid;
@@ -84,6 +88,7 @@
   }
   label{
     margin: 0px;
+    vertical-align: baseline;
   }
   p{
     margin: 0px;

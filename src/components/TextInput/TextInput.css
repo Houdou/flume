@@ -5,11 +5,14 @@
 .input{
   background: linear-gradient(to bottom, #5b5f62, #6f7477);
   width: 100%;
+  min-height: 26px;
   border: 1px solid #3c3e40;
   font-size: 13px;
-  padding: 5px;
+  padding: 4px 6px;
   resize: vertical;
   outline: none;
+  display: flex;
+  align-items: center;
   &::placeholder{
     color: rgb(47, 49, 50);
   }

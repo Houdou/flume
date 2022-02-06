@@ -54,9 +54,24 @@ const IoPorts = ({
   const triggerRecalculation = React.useContext(ConnectionRecalculateContext);
   const resolvedInputs = useTransputs(inputs, 'input', nodeId, inputData, connections);
   const resolvedOutputs = useTransputs(outputs, 'output', nodeId, inputData, connections);
-  
+
   return (
     <div className={styles.wrapper}>
+      {!!resolvedOutputs.length && (
+        <div className={styles.outputs}>
+          {resolvedOutputs.map(output => (
+            <Output
+              {...output}
+              triggerRecalculation={triggerRecalculation}
+              inputTypes={inputTypes}
+              nodeId={nodeId}
+              inputData={inputData}
+              portOnRight
+              key={output.name}
+              />
+          ))}
+        </div>
+      )}
       {resolvedInputs.length ? (
         <div className={styles.inputs}>
           {resolvedInputs.map(input => (
@@ -74,21 +89,6 @@ const IoPorts = ({
           ))}
         </div>
       ) : null}
-      {!!resolvedOutputs.length && (
-        <div className={styles.outputs}>
-          {resolvedOutputs.map(output => (
-            <Output
-              {...output}
-              triggerRecalculation={triggerRecalculation}
-              inputTypes={inputTypes}
-              nodeId={nodeId}
-              inputData={inputData}
-              portOnRight
-              key={output.name}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 };
@@ -142,7 +142,7 @@ const Input = ({
         />
       ) : null}
       {(!controls.length || noControls || isConnected) && (
-        <label className={styles.portLabel}>{label || defaultLabel}</label>
+        <label className={styles.portLabel}><span>{label || defaultLabel}</span></label>
       )}
       {!noControls && !isConnected
         ? (
@@ -190,7 +190,7 @@ const Output = ({
         e.stopPropagation();
       }}
     >
-      <label className={styles.portLabel}>{label || defaultLabel}</label>
+      <label className={styles.portLabel}><span>{label || defaultLabel}</span></label>
       <Port
         type={type}
         name={name}
@@ -386,7 +386,10 @@ const Port = ({
       <div
         style={{ zIndex: 999 }}
         onMouseDown={handleDragStart}
-        className={styles.port}
+        className={[
+          styles.port,
+          isInput ? null : styles.outputPort
+        ].filter(Boolean).join(' ')}
         data-port-color={color}
         data-port-name={name}
         data-port-type={type}
