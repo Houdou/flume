@@ -140,8 +140,11 @@ export let NodeEditor = (
   const previousSelectedNodeId = usePrevious(context.selectedNodeId);
 
   React.useEffect(() => {
-    if(onSelectedChange && context.selectedNodeId && context.selectedNodeId !== previousSelectedNodeId) {
-      onSelectedChange(nodes[context.selectedNodeId]);
+    if(onSelectedChange && context.selectedNodeId !== previousSelectedNodeId) {
+      onSelectedChange(
+        nodes[context.selectedNodeId] || null,
+        context.selectedNodeId
+      );
     }
   }, [context.selectedNodeId, previousSelectedNodeId, onSelectedChange])
 
