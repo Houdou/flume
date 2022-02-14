@@ -121,11 +121,11 @@ const Stage = ({
   };
 
   const handleDragEnd = e => {
-    const xDistance = dragData.current.x - e.clientX;
-    const yDistance = dragData.current.y - e.clientY;
-    dragData.current.x = e.clientX;
-    dragData.current.y = e.clientY;
     if(dragData.current.pan) {
+      const xDistance = dragData.current.x - e.clientX;
+      const yDistance = dragData.current.y - e.clientY;
+      dragData.current.x = e.clientX;
+      dragData.current.y = e.clientY;
       dispatchStageState(({ translate: tran }) => ({
         type: "SET_TRANSLATE",
         translate: {
@@ -135,6 +135,26 @@ const Stage = ({
       }));
     } else {
       // Trigger selection
+      const prev = {...selectData.current};
+      const dx = e.clientX - dragData.current.x;
+      const dy = e.clientY - dragData.current.y;
+      // Update selection area size
+      selectData.current = {
+        x: prev.x,
+        y: prev.y,
+        w: dx,
+        h: dy,
+      };
+
+      const area = {
+        x: byScale(Math.min(prev.x, prev.x + dx)) + byScale(translate.x),
+        y: byScale(Math.min(prev.y, prev.y + dy)) + byScale(translate.y),
+        w: byScale(Math.abs(dx)),
+        h: byScale(Math.abs(dy)),
+      };
+
+      // TODO : query the area
+
       setSelecting(false);
     }
   };
