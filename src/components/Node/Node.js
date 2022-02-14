@@ -18,6 +18,7 @@ const Node = ({
   height,
   x,
   y,
+  selected,
   delay = 6,
   stageRect,
   connections,
@@ -169,7 +170,8 @@ const Node = ({
       className={styles.wrapper}
       style={{
         width,
-        transform: `translate(${x}px, ${y}px)`
+        transform: `translate(${x}px, ${y}px)`,
+        borderColor: selected ? 'cyan' : 'transparent'
       }}
       onDragStart={startDrag}
       onDrag={handleDrag}

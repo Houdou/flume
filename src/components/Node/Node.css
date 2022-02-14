@@ -9,6 +9,8 @@
   flex-direction: column;
   z-index: 1;
   cursor: default;
+  box-sizing: border-box;
+  border: 1px transparent solid;
 }
 .label{
   font-size: 14px;
